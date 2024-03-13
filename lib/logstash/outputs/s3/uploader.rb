@@ -39,7 +39,7 @@ module LogStash
 
           zstd_compressed_file = "#{SecureRandom.uuid}.json.zst"
 
-          compressed = Zstd.compress_file(file.path, zstd_compressed_tempfile)
+          compressed = Zstd.compress_file(file.path, zstd_compressed_file)
 
           tries = 0
           begin
