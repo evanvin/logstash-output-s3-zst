@@ -1,6 +1,8 @@
 # encoding: utf-8
 require "logstash/util"
 require "aws-sdk"
+require 'securerandom'
+require 'zstd'
 
 module LogStash
   module Outputs
@@ -35,10 +37,14 @@ module LogStash
         def upload(file, options = {})
           upload_options = options.fetch(:upload_options, {})
 
+          zstd_compressed_file = "#{SecureRandom.uuid}.json.zst"
+
+          compressed = Zstd.compress_file(file.path, zstd_compressed_tempfile)
+
           tries = 0
           begin
-            obj = bucket.object(file.key)
-            obj.upload_file(file.path, upload_options)
+            obj = bucket.object(compressed.key)
+            obj.upload_file(compressed.path, upload_options)
           rescue Errno::ENOENT => e
             logger.error("File doesn't exist! Unrecoverable error.", :exception => e.class, :message => e.message, :path => file.path, :backtrace => e.backtrace)
           rescue => e
@@ -58,9 +64,9 @@ module LogStash
           end
 
           begin
-            options[:on_complete].call(file) unless options[:on_complete].nil?
+            options[:on_complete].call(compressed) unless options[:on_complete].nil?
           rescue => e
-            logger.error("An error occurred in the `on_complete` uploader", :exception => e.class, :message => e.message, :path => file.path, :backtrace => e.backtrace)
+            logger.error("An error occurred in the `on_complete` uploader", :exception => e.class, :message => e.message, :path => compressed.path, :backtrace => e.backtrace)
             raise e # reraise it since we don't deal with it now
           end
         end
