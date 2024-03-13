@@ -1,12 +1,12 @@
 Gem::Specification.new do |s|
-  s.name            = 'logstash-output-s3'
-  s.version         = '4.4.1'
+  s.name            = 'logstash-output-s3-zst'
+  s.version         = '1.0.0'
   s.licenses        = ['Apache-2.0']
-  s.summary         = "Sends Logstash events to the Amazon Simple Storage Service"
+  s.summary         = "Sends Logstash events to the Amazon Simple Storage Service and zst compresses it"
   s.description     = "This gem is a Logstash plugin required to be installed on top of the Logstash core pipeline using $LS_HOME/bin/logstash-plugin install gemname. This gem is not a stand-alone program"
-  s.authors         = ["Elastic"]
-  s.email           = 'info@elastic.co'
-  s.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
+  s.authors         = ["Evan Vinciguerra", "Elastic"]
+  s.email           = 'evanv511@gmailcom'
+  s.homepage        = "https://github.com/evanvin/logstash-output-s3-zst"
   s.require_paths = ["lib", "vendor/jar-dependencies"]
 
   # Files

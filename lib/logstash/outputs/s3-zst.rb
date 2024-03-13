@@ -75,7 +75,7 @@ Aws.eager_autoload!
 #      canned_acl => "private"                  (optional. Options are "private", "public-read", "public-read-write", "authenticated-read", "aws-exec-read", "bucket-owner-read", "bucket-owner-full-control", "log-delivery-write". Defaults to "private" )
 #    }
 #
-class LogStash::Outputs::S3 < LogStash::Outputs::Base
+class LogStash::Outputs::S3ZST < LogStash::Outputs::Base
   require "logstash/outputs/s3/writable_directory_validator"
   require "logstash/outputs/s3/path_validator"
   require "logstash/outputs/s3/write_bucket_permission_validator"
@@ -99,7 +99,7 @@ class LogStash::Outputs::S3 < LogStash::Outputs::Base
 
   GZIP_ENCODING = "gzip"
 
-  config_name "s3"
+  config_name "s3-zst"
   default :codec, "line"
 
   concurrency :shared
